@@ -1,8 +1,9 @@
-source "https://rubygems.org"
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
 
 ruby '2.6.3'
 
-group :development, :test do 
-    gem 'rspec'
+group :development, :test do
+  gem 'rspec'
 end
-
