@@ -25,14 +25,14 @@ describe OysterCard do
 
   describe "#tap_out" do
     it "returns false when card has been tapped in but not out" do
-      subject.tap_out
+      subject.tap_out(station)
       expect(subject.in_journey?).to eq false
     end
 
     it "deducts minimum fare when you tap out" do 
       subject.instance_variable_set(:@balance, 10)
       subject.tap_in(station)
-      expect{subject.tap_out}.to change{ subject.balance }.by (-OysterCard::MIN_CHARGE)
+      expect{subject.tap_out(station)}.to change{ subject.balance }.by (-OysterCard::MIN_CHARGE)
     end
   end
 

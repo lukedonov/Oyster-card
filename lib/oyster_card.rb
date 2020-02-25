@@ -1,5 +1,5 @@
 class OysterCard
-  attr_reader :balance, :fare, :entry_station
+  attr_reader :balance, :fare, :entry_station, :history
   MIN_BALANCE = 1
   MAX_BALANCE = 90
   MIN_CHARGE = 1
@@ -9,7 +9,8 @@ class OysterCard
     @fare = fare.to_i
     @status = false
     @min_charge = MIN_CHARGE
-    @entry_station
+    @entry_station = entry_station
+    @history = []
   end
 
   def check_balance
@@ -24,10 +25,12 @@ class OysterCard
   def tap_in(station)
       fail "insufficient balance" if balance < MIN_BALANCE
       @status = true
+      @entry_station = station
   end
   
-  def tap_out
+  def tap_out(station)
     deduct(MIN_CHARGE)
+    @history << {in: entry_station, exit: station}
     @entry_station = nil
   end
 
