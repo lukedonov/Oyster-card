@@ -3,3 +3,4 @@ Feature tests.
 card = Card.new
 card.top_up(10)
 card.check_balance
+
