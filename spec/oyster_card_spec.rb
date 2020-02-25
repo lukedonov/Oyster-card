@@ -1,12 +1,8 @@
 require 'oyster_card'
 
 describe OysterCard do
-  # it { is_expected.to respond_to :check_balance }
-  # it { is_expected.to respond_to :tap_in }   
-  # it { is_expected.to respond_to :tap_out }   
-  # it { is_expected.to respond_to :in_journey? }   
-  # it { is_expected.to respond_to(:top_up).with(1).argument }
-  
+  let(:station) { double :station }
+
   describe "#check_balance" do
     it "returns the card balance" do 
       subject.instance_variable_set(:@balance, 20)
@@ -33,24 +29,29 @@ describe OysterCard do
       expect(subject.in_journey?).to eq false
     end
 
-    it "deducts the fare from the users balance" do
-      subject.instance_variable_set(:@fare, 5)
+    it "deducts minimum fare when you tap out" do 
       subject.instance_variable_set(:@balance, 10)
-      subject.tap_out
-      expect(subject.balance).to eq 5
+      subject.tap_in(station)
+      expect{subject.tap_out}.to change{ subject.balance }.by (-OysterCard::MIN_CHARGE)
     end
   end
 
   describe "#tap_in" do
     it "returns true when card has been tapped in but not out" do
       subject.instance_variable_set(:@balance, 5)
-      subject.tap_in
-      expect(subject.in_journey?).to eq true
+      subject.tap_in(station)
+      expect subject.in_journey? == true
     end
 
     it "raises an error when balance is less than £1" do
       subject.instance_variable_set(:@balance, 0)
-      expect { subject.tap_in }.to raise_error "insufficient balance"
+      expect { subject.tap_in(station) }.to raise_error "insufficient balance"
+    end
+
+    it "saves the entry station" do
+      subject.instance_variable_set(:@balance,10)
+      subject.tap_in(station)
+      expect subject.entry_station == station
     end
   end
 end
