@@ -1,7 +1,20 @@
 require 'oyster_card'
 
 describe OysterCard do
-  let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
+  let(:journeys) { [in: entry_station, exit: exit_station] }
+
+  it "returns an empty list of journeys by default" do
+    expect(subject.history).to eq []
+  end
+
+  it "checks that touching in and out creates a journey" do
+    subject.instance_variable_set(:@balance, 10)
+    subject.tap_in(entry_station)
+    subject.tap_out(exit_station)
+    expect(subject.history).to eq journeys
+  end
 
   describe "#check_balance" do
     it "returns the card balance" do 
@@ -25,33 +38,33 @@ describe OysterCard do
 
   describe "#tap_out" do
     it "returns false when card has been tapped in but not out" do
-      subject.tap_out(station)
+      subject.tap_out(exit_station)
       expect(subject.in_journey?).to eq false
     end
 
     it "deducts minimum fare when you tap out" do 
       subject.instance_variable_set(:@balance, 10)
-      subject.tap_in(station)
-      expect{subject.tap_out(station)}.to change{ subject.balance }.by (-OysterCard::MIN_CHARGE)
+      subject.tap_in(entry_station)
+      expect{ subject.tap_out(exit_station) }.to change{ subject.balance }.by (-OysterCard::MIN_CHARGE)
     end
   end
 
   describe "#tap_in" do
     it "returns true when card has been tapped in but not out" do
       subject.instance_variable_set(:@balance, 5)
-      subject.tap_in(station)
+      subject.tap_in(entry_station)
       expect subject.in_journey? == true
     end
 
     it "raises an error when balance is less than £1" do
       subject.instance_variable_set(:@balance, 0)
-      expect { subject.tap_in(station) }.to raise_error "insufficient balance"
+      expect { subject.tap_in(entry_station) }.to raise_error "insufficient balance"
     end
 
     it "saves the entry station" do
       subject.instance_variable_set(:@balance,10)
-      subject.tap_in(station)
-      expect subject.entry_station == station
+      subject.tap_in(entry_station)
+      expect subject.entry_station == entry_station
     end
   end
 end
