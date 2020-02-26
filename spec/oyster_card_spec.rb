@@ -49,6 +49,12 @@ describe OysterCard do
       subject.tap_in(entry_station)
       expect { subject.tap_out(exit_station) }.to change { subject.balance }.by -OysterCard::MIN_CHARGE
     end
+
+    it "charges penalty fare if tap out twice" do
+      topup
+      subject.tap_out(exit_station)
+      expect { subject.tap_out(exit_station) }.to change { subject.balance }.by -Journey::PENALTY_FARE
+    end
   end
 
   describe '#tap_in' do
@@ -63,10 +69,10 @@ describe OysterCard do
       expect { subject.tap_in(entry_station) }.to raise_error 'insufficient balance'
     end
 
-    it 'saves the entry station' do
+    it "charges penalty fare if tap in twice" do
       topup
       subject.tap_in(entry_station)
-      expect(subject.entry_station).to eq entry_station
+      expect { subject.tap_in(entry_station) }.to change { subject.balance }.by -Journey::PENALTY_FARE
     end
   end
 end
