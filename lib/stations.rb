@@ -3,7 +3,6 @@ class Station
 
   def initialize
     @name = "Liverpool Street"
-    @zone = "1"
+    @zone = 1
   end
-
 end

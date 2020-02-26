@@ -56,7 +56,7 @@ describe OysterCard do
     it 'returns true when card has been tapped in but not out' do
       topup
       subject.tap_in(entry_station)
-      expect subject.in_journey? == true
+      expect(subject.in_journey?).to eq true
     end
 
     it 'raises an error when balance is less than £1' do
@@ -67,7 +67,7 @@ describe OysterCard do
     it 'saves the entry station' do
       topup
       subject.tap_in(entry_station)
-      expect subject.entry_station == entry_station
+      expect(subject.entry_station).to eq entry_station
     end
   end
 end

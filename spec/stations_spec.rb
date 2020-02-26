@@ -6,7 +6,6 @@ describe Station do
   end
 
   it "knows it's own zone" do
-    expect(subject.zone).to eq "1"
+    expect(subject.zone).to eq 1
   end
-
 end
