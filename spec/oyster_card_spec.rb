@@ -40,8 +40,7 @@ describe OysterCard do
   end
 
   describe '#tap_out' do
-    it 'returns false when card has been tapped in but not out' do
-      subject.tap_out(exit_station)
+    it 'returns false when card has been tapped out but not in' do
       expect(subject.in_journey?).to eq false
     end
 

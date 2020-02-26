@@ -9,7 +9,7 @@ class OysterCard
     @fare = fare.to_i
     @status = false
     @min_charge = MIN_CHARGE
-    @entry_station = entry_station
+    @entry_station
     @history = []
   end
 
