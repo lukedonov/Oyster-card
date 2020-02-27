@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'oyster_card'
 class Journey
   attr_reader :entry_station, :exit_station

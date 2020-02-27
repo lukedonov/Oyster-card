@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'stations'
 
-describe Station do 
+describe Station do
   it "knows it's own name" do
-    expect(subject.name).to eq "Liverpool Street"
+    expect(subject.name).to eq 'Liverpool Street'
   end
 
   it "knows it's own zone" do
